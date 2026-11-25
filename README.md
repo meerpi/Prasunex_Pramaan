@@ -89,7 +89,11 @@ Open `http://localhost:8000`. On an empty database, the home page displays the z
 
 ### Optional integrations
 
-Copy [.env.example](.env.example) to `.env` if you want to customize runtime behavior. Everything works locally without external keys: leaving `GEMINI_API_KEY`, `OPENAI_API_KEY`, and `OPENROUTER_API_KEY` blank uses the local deterministic rewriter, and leaving `PRAMAAN_DIGILOCKER_CLIENT_ID` blank runs the DigiLocker RFC 7636 S256 PKCE flow in local sandbox mode. Check `GET /api/health` to see server status and model load state.
+You do not need any paid API keys or government accounts to run Pramaan. Everything works locally out of the box. Copy [.env.example](.env.example) to `.env` only if you want to change ports, switch databases, or plug in external services:
+
+- External LLM keys (`GEMINI_API_KEY`, `OPENAI_API_KEY`, `OPENROUTER_API_KEY`) are used only by Review Studio when you click Draft Compliant Phrasing (for example, rewriting `100% placement` to `86.0% placement`). Leave them blank to run 100% offline with the built-in local rule-based rewriter. If you add a key (with `PRAMAAN_OFFLINE_ONLY=false`), Pramaan masks student and campus PII first, sends only the masked text to the model for phrasing, and re-verifies the result.
+- DigiLocker credentials (`PRAMAAN_DIGILOCKER_CLIENT_ID`, `PRAMAAN_DIGILOCKER_CLIENT_SECRET`) are used in the Parent Portal when a parent verifies consent for a student under 18 under DPDP Rule 10. Official DigiLocker (MeriPehchaan) partner credentials are issued only to registered institutions, so leaving them blank runs the same cryptographic PKCE handshake locally in sandbox mode. Once an institution configures official credentials, parents are redirected to the live DigiLocker portal instead.
+- Health check (`GET /api/health`): visiting `http://localhost:8000/api/health` returns a JSON status summary showing whether the server is up, whether offline mode is on, whether DigiLocker is configured, and whether the local AI models are loaded.
 
 ## Linting and build checks
 
