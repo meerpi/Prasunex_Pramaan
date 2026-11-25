@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -35,17 +36,34 @@ from pramaan.store.repos import init_db
 async def _lifespan(_app: FastAPI):
     engine = configure_database()
     if engine.dialect.name == "postgresql":
-        for attempt in range(1, 6):
+        for attempt in range(1, 11):
             try:
                 await init_db(engine)
                 break
             except (OperationalError, OSError):
-                if attempt == 5:
+                if attempt == 10:
                     raise
-                await asyncio.sleep(0.5 * attempt)
+                await asyncio.sleep(min(2.0, 0.5 * attempt))
     else:
         await init_db(engine)
     yield
+
+
+def _resolve_frontend_dist() -> Path:
+    """Locate built SPA assets across editable checkouts and non-editable container installs."""
+    candidates: list[Path] = []
+    env_dist = os.environ.get("PRAMAAN_FRONTEND_DIST", "").strip()
+    if env_dist:
+        candidates.append(Path(env_dist))
+    candidates.extend([
+        Path(__file__).resolve().parents[4] / "frontend" / "dist",
+        Path.cwd().parent / "frontend" / "dist",
+        Path("/app/pramaan/frontend/dist"),
+    ])
+    for cand in candidates:
+        if cand.is_dir() and (cand / "index.html").is_file():
+            return cand
+    return candidates[0]
 
 
 def create_app() -> FastAPI:
@@ -134,7 +152,7 @@ def create_app() -> FastAPI:
     app.include_router(canons.router, prefix="/api")
     app.include_router(gate.router, prefix="/api")
 
-    dist_dir = Path(__file__).resolve().parents[4] / "frontend" / "dist"
+    dist_dir = _resolve_frontend_dist()
     if dist_dir.is_dir():
         assets_dir = dist_dir / "assets"
         if assets_dir.is_dir():

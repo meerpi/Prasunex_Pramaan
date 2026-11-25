@@ -35,6 +35,10 @@ services:
       - pramaan_data:/var/lib/pramaan
     networks:
       - pramaan_net
+    depends_on:
+      db:
+        condition: service_healthy
+        required: false
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/api/health"]
       interval: 15s

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import yaml
@@ -15,7 +16,25 @@ from pramaan.domain import (
     VoiceProfile,
 )
 
-CANONS_DIR = Path(__file__).resolve().parents[4] / "canons"
+
+def _resolve_canons_dir() -> Path:
+    """Locate built-in YAML ordinance canons across editable checkouts and wheel installs."""
+    candidates: list[Path] = []
+    env_dir = os.environ.get("PRAMAAN_CANONS_DIR", "").strip()
+    if env_dir:
+        candidates.append(Path(env_dir))
+    candidates.extend([
+        Path(__file__).resolve().parents[4] / "canons",
+        Path.cwd().parent / "canons",
+        Path("/app/pramaan/canons"),
+    ])
+    for cand in candidates:
+        if cand.is_dir() and any(cand.glob("*.yaml")):
+            return cand
+    return candidates[0]
+
+
+CANONS_DIR = _resolve_canons_dir()
 
 
 def parse_canon_yaml(raw_yaml: str) -> Canon:

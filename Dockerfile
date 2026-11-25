@@ -20,6 +20,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     HF_HOME=/var/lib/pramaan/hf_cache \
+    PRAMAAN_CANONS_DIR=/app/pramaan/canons \
+    PRAMAAN_FRONTEND_DIST=/app/pramaan/frontend/dist \
     PRAMAAN_UPLOAD_DIR=/var/lib/pramaan/uploads \
     PRAMAAN_DATABASE_URL=sqlite+aiosqlite:////var/lib/pramaan/pramaan.db
 
@@ -42,6 +44,7 @@ COPY --chown=pramaan:pramaan pramaan/backend/src/ ./src/
 COPY --chown=pramaan:pramaan pramaan/backend/sql/ ./sql/
 
 RUN pip install --upgrade pip setuptools wheel \
+    && pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.4.0,<2.7" \
     && pip install ".[postgres]"
 
 ARG PRELOAD_MODELS=0

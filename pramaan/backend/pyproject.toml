@@ -59,6 +59,9 @@ pramaan-mcp = "pramaan.mcp.server:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+pramaan = ["engine/*.json"]
+
 [tool.ruff]
 line-length = 100
 target-version = "py312"
