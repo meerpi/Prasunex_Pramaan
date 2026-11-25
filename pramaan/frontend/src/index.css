@@ -1,0 +1,597 @@
+@import "tailwindcss";
+@source "../src";
+
+@font-face {
+  font-family: "AnekLatinCustom";
+  src: url("./assets/fonts/anek-latin.woff2") format("woff2");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "AnekLatinCustom";
+  src: url("./assets/fonts/anek-latin-ext.woff2") format("woff2");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "AnekDevaPramaan";
+  src: url("./assets/fonts/anek-deva-pramaan.woff2") format("woff2");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrainsMonoCustom";
+  src: url("./assets/fonts/jbmono.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Crisp Indian Gazette & Registrar Indigo Ledger tokens (Tailwind v4 @theme) */
+@theme {
+  --font-display: "AnekLatinCustom", "AnekDevaPramaan", system-ui, -apple-system, sans-serif;
+  --font-sans: "AnekLatinCustom", "AnekDevaPramaan", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrainsMonoCustom", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Cool slate-tinted archival canvas & crisp elevated ledger paper */
+  --color-canvas: #F3F6FB;
+  --color-surface: #FFFFFF;
+  --color-subtle: #E8EEF7;
+  --color-trough: #D8E2F0;
+  --color-resolved: #F0F4FA;
+
+  /* Registrar Midnight Indigo navigation spine (Admin & Faculty Workbench) */
+  --color-rail: #0F1E3A;
+  --color-rail-hover: #182C52;
+  --color-rail-hover-strong: #203969;
+  --color-rail-border: #1E3359;
+  --color-rail-border-strong: #2E4A7D;
+  --color-rail-ink: #F8FAFC;
+  --color-rail-muted: #9CB0CE;
+  --color-rail-accent: #60A5FA;
+  --color-rail-sub: #CBD8EC;
+
+  /* Neutral slate hairline aliases (zero decorative gold/brass) */
+  --color-brass: #334155;
+  --color-brass-deep: #1E40AF;
+  --color-brass-border: #CBD5E1;
+
+  /* Crisp slate ink hierarchy (all >= 5.2:1 WCAG AA on #F3F6FB and #E8EEF7) */
+  --color-ink: #0F172A;
+  --color-ink-body: #1E293B;
+  --color-ink-secondary: #475569;
+  --color-ink-muted: #55657D;
+
+  /* Slate-tinted hairline & docket rules */
+  --color-rule: #CBD5E1;
+  --color-rule-subtle: #E2E8F0;
+  --color-rule-dashed: #94A3B8;
+
+  /* Primary institutional accent (Official Registrar Indigo — 8.6:1 AA/AAA on white) */
+  --color-action: #1E40AF;
+  --color-action-hover: #1D358F;
+  --color-action-tint: #EEF4FF;
+  --color-action-tint-hover: #DBEAFE;
+
+  /* Exception-first statutory pigments */
+  --color-verified: #0D7A5F;
+  --color-verified-ink: #065F46;
+  --color-verified-bg: #ECFDF5;
+  --color-verified-border: #A7F3D0;
+
+  --color-warn: #9A4D09;
+  --color-warn-accent: #C26A0E;
+  --color-warn-bg: #FFFBEB;
+  --color-warn-border: #FDE68A;
+
+  --color-blocker: #B91C1C;
+  --color-blocker-strong: #DC2626;
+  --color-blocker-deep: #7F1D1D;
+  --color-blocker-bg: #FEF2F2;
+  --color-blocker-bg-hover: #FEE2E2;
+  --color-blocker-border: #FECACA;
+
+  --color-smt: #4F46E5;
+  --color-smt-bg: #EEF2FF;
+  --color-smt-border: #C7D2FE;
+
+  /* Syntax tokens strictly for YAML / JSON-RPC code blocks */
+  --color-code-key: #93C5FD;
+  --color-code-str: #86EFAC;
+  --color-code-num: #FDE68A;
+  --color-code-comment: #9CB0CE;
+  --color-signal-ok: #34D399;
+}
+
+:root {
+  --bg-canvas: var(--color-canvas);
+  --bg-hover: var(--color-subtle);
+  --ink-primary: var(--color-ink);
+
+  /* Motion timings & easing (exponential ease-out only) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-exit: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur-fast: 140ms;
+  --dur-enter: 200ms;
+  --dur-exit: 110ms;
+
+  /* Crisp paper & overlay elevation (soft offset blur, zero brass inset bars) */
+  --shadow-sheet:
+    0 1px 2px rgba(15, 20, 25, 0.05),
+    0 8px 20px -14px rgba(15, 20, 25, 0.12);
+  --shadow-seal:
+    0 12px 28px -16px rgba(15, 20, 25, 0.22),
+    0 1px 3px rgba(15, 20, 25, 0.07);
+  --shadow-popover:
+    0 18px 40px -14px rgba(15, 20, 25, 0.28),
+    0 2px 6px rgba(15, 20, 25, 0.08);
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  font-size: 14px;
+  line-height: 1.55;
+  overflow-x: clip;
+  caret-color: var(--color-action);
+  position: relative;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+::selection {
+  background-color: var(--color-action-tint-hover);
+  color: var(--color-ink);
+}
+
+/* Stark display headings with tight optical tracking */
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
+}
+
+h1,
+h2 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  text-underline-offset: 3px;
+}
+
+/* Crisp bordered form inputs with accessible focus ring */
+input[type="text"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="search"],
+input[type="email"],
+select,
+textarea {
+  box-shadow: inset 0 1px 2px rgba(15, 20, 25, 0.035);
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+input[type="text"]:focus-visible,
+input[type="password"]:focus-visible,
+input[type="number"]:focus-visible,
+input[type="date"]:focus-visible,
+input[type="search"]:focus-visible,
+input[type="email"]:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  border-color: var(--color-action);
+  box-shadow: 0 0 0 3px rgba(27, 59, 111, 0.16), inset 0 1px 2px rgba(15, 20, 25, 0.02);
+}
+
+/* Restrained scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-rule);
+  border-radius: 9999px;
+}
+
+/* Single Registrar Indigo masthead rule on page headers */
+.gazette-header {
+  position: relative;
+  padding-bottom: 1.25rem;
+  border-bottom: 2px solid var(--color-action);
+}
+
+/* Crisp Registrar Indigo top edge framing focal paper sheets */
+.gazette-folio {
+  border-top: 2px solid var(--color-action);
+  box-shadow: var(--shadow-sheet);
+}
+
+/* Clean quiet QR frame */
+.qr-vault-frame {
+  padding: 10px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-rule);
+}
+
+/* Clean multi-file PDF dropzone surface */
+.dropzone-instrument {
+  background-color: var(--color-surface);
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+
+/* Quiet indigo underline draw on public header links */
+.nav-underline-link {
+  position: relative;
+  text-decoration: none;
+}
+
+.nav-underline-link::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -3px;
+  height: 1.5px;
+  background-color: var(--color-action);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 160ms var(--ease-out);
+}
+
+[dir="rtl"] .nav-underline-link::after {
+  transform-origin: right;
+}
+
+/* Grounded button elevation (no floating hover-lift) */
+.btn-primary-tactile {
+  box-shadow: 0 1px 2px rgba(15, 20, 25, 0.16);
+}
+
+.btn-secondary-tactile {
+  box-shadow: 0 1px 2px rgba(15, 20, 25, 0.04);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-ink-muted);
+  }
+  .row-hoverable:hover {
+    background-color: var(--bg-hover);
+  }
+  .nav-underline-link:hover::after {
+    transform: scaleX(1);
+  }
+  .dropzone-instrument:hover {
+    border-color: var(--color-action);
+    background-color: var(--color-action-tint);
+  }
+}
+
+/* Credential / docket stamp entrance (GPU-only, interruptible) */
+.passport-stamp {
+  opacity: 1;
+  transform: scale(1) translate3d(0, 0, 0);
+  transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out);
+}
+
+@starting-style {
+  .passport-stamp {
+    opacity: 0;
+    transform: scale(0.985) translate3d(0, 5px, 0);
+  }
+}
+
+/* GPU-only horizontal proportion bars */
+.gauge-fill {
+  transform-origin: left center;
+  transition: transform 280ms var(--ease-out);
+}
+
+[dir="rtl"] .gauge-fill {
+  transform-origin: right center;
+}
+
+.font-mono,
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--font-mono);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.wrap-anywhere {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Tactile press + touch-safe interaction defaults */
+.btn-interactive {
+  touch-action: manipulation;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+
+.btn-interactive:not(:disabled):active {
+  transform: translateY(0.5px) scale(0.99);
+}
+
+/* Route panel reveal */
+@keyframes panelEnter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 4px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes panelFadeOnly {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes reducedPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.animate-panel {
+  animation: panelEnter var(--dur-enter) var(--ease-out) backwards;
+}
+
+/* Interruptible modal & drawer transitions */
+.modal-backdrop {
+  opacity: 1;
+  transition: opacity 150ms var(--ease-out);
+}
+
+@starting-style {
+  .modal-backdrop[data-state="open"] {
+    opacity: 0;
+  }
+}
+
+.modal-backdrop[data-state="closing"] {
+  opacity: 0;
+  transition-duration: var(--dur-exit);
+  transition-timing-function: var(--ease-exit);
+  pointer-events: none;
+}
+
+.modal-panel {
+  opacity: 1;
+  transform: scale(1) translate3d(0, 0, 0);
+  transition: opacity 150ms var(--ease-out), transform 180ms var(--ease-out);
+}
+
+@starting-style {
+  .modal-panel[data-state="open"] {
+    opacity: 0;
+    transform: scale(0.97) translate3d(0, 5px, 0);
+  }
+}
+
+.modal-panel[data-state="closing"] {
+  opacity: 0;
+  transform: scale(0.975) translate3d(0, 4px, 0);
+  transition-duration: var(--dur-exit);
+  transition-timing-function: var(--ease-exit);
+}
+
+.drawer-panel {
+  transform: translate3d(0, 0, 0);
+  transition: transform 220ms var(--ease-drawer);
+}
+
+@starting-style {
+  .drawer-panel[data-state="open"] {
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  [dir="rtl"] .drawer-panel[data-state="open"] {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+.drawer-panel[data-state="closing"] {
+  transform: translate3d(-100%, 0, 0);
+  transition-duration: 180ms;
+  transition-timing-function: var(--ease-exit);
+}
+
+[dir="rtl"] .drawer-panel[data-state="closing"] {
+  transform: translate3d(100%, 0, 0);
+}
+
+/* Smooth interruptible grid-row reveal for proof disclosures */
+.disclosure-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 150ms var(--ease-out), opacity 150ms var(--ease-out);
+}
+
+.disclosure-body[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.disclosure-body > div {
+  overflow: hidden;
+}
+
+/* Copy -> Check micro-morph */
+.icon-morph {
+  transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+/* Accessible reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-panel {
+    animation: panelFadeOnly 150ms var(--ease-out) backwards;
+  }
+
+  .passport-stamp {
+    transform: none !important;
+    transition: opacity 150ms var(--ease-out);
+  }
+
+  .nav-underline-link::after {
+    transition: none;
+  }
+
+  .animate-spin {
+    animation: reducedPulse 2.4s ease-in-out infinite;
+  }
+
+  .modal-panel,
+  .modal-panel[data-state="closing"],
+  .drawer-panel,
+  .drawer-panel[data-state="closing"] {
+    transform: none !important;
+    transition: opacity 150ms var(--ease-out);
+  }
+
+  .drawer-panel[data-state="closing"] {
+    opacity: 0;
+  }
+
+  @starting-style {
+    .modal-panel[data-state="open"],
+    .drawer-panel[data-state="open"] {
+      opacity: 0;
+      transform: none;
+    }
+  }
+
+  .disclosure-body {
+    transition: opacity 150ms var(--ease-out);
+  }
+
+  .btn-interactive:not(:disabled):active {
+    transform: none !important;
+  }
+
+  html {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Manuscript TipTap editor canvas */
+.ProseMirror {
+  outline: none;
+  min-height: 220px;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--ink-primary);
+  overflow-wrap: anywhere;
+}
+
+.ProseMirror p {
+  margin: 0 0 0.95em 0;
+  max-width: 68ch;
+}
+
+.ProseMirror p:last-child {
+  margin-bottom: 0;
+}
+
+.pramaan-hl-blocker,
+.pramaan-hl-warning,
+.pramaan-hl-smt {
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 0 2px 1px;
+  text-decoration: none;
+  transition: opacity var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+}
+
+.pramaan-hl-blocker {
+  background-color: rgba(158, 34, 29, 0.11);
+  border-bottom: 2px solid var(--color-blocker-strong);
+}
+
+.pramaan-hl-warning {
+  background-color: rgba(180, 99, 14, 0.08);
+  border-bottom: 1.5px dashed var(--color-warn-accent);
+}
+
+.pramaan-hl-smt {
+  background-color: rgba(27, 59, 111, 0.09);
+  border-bottom: 1.5px dotted var(--color-smt);
+}
+
+.studio-has-active-finding .pramaan-hl-blocker:not(.pramaan-hl-active),
+.studio-has-active-finding .pramaan-hl-warning:not(.pramaan-hl-active),
+.studio-has-active-finding .pramaan-hl-smt:not(.pramaan-hl-active) {
+  opacity: 0.58;
+  background-color: transparent;
+}
+
+.pramaan-hl-active {
+  background-color: rgba(27, 59, 111, 0.15) !important;
+  border-bottom: 2.5px solid var(--color-action) !important;
+  opacity: 1 !important;
+}

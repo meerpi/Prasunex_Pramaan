@@ -1,0 +1,47 @@
+# Pramaan Campus Placement & Student Credential Governance Canon
+# Built-in national statutory / ASCI / UGC rules only (institution-specific figures come from each tenant's ERP).
+
+id: pramaan-campus-placement
+version: "2026.11"
+require_image_alt: true
+
+terminology:
+  - id: term-guaranteed-placement
+    pattern_text: guaranteed 100% placement
+    preferred: 100% placement among registered eligible candidates
+    severity: 85
+    note: "ASCI / UGC Advertising Integrity: placement percentages must cite registered opting-in denominator."
+
+  - id: term-sole-author-overclaim
+    pattern_text: sole creator of production payment
+    preferred: contributor on internal test harness
+    severity: 80
+    note: "Verify internship scope qualifiers against SIS / employer certificate."
+
+  - id: term-zero-backlogs-absolute
+    pattern_text: spotless record with zero arrears
+    preferred: zero current active backlogs
+    severity: 60
+    note: "Differentiate active backlogs from previously cleared supplementary papers."
+
+palette: []
+
+facts: []
+
+trigger_obligations:
+  - id: trig-placement-denominator
+    trigger_pattern: "\\b(?:100%|highest|guaranteed)\\s+(?:placement|package|CTC)\\b"
+    required_disclaimer_id: disc-placement-cohort
+    required_disclaimer_text: "Based on opting-in registered eligible students per audited Placement Cell records"
+    same_language: true
+    same_font_family: false
+    min_font_height_ratio: 0.45
+    severity: 75
+
+voice_profile:
+  id: campus-academic-voice
+  max_sentence_words: 32
+  min_sentence_words: 2
+  max_passive_voice_pct: 28.0
+  max_flesch_kincaid_grade: 14.0
+  severity: 40

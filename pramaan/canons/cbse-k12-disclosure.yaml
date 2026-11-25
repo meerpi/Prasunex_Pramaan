@@ -1,0 +1,70 @@
+# Pramaan CBSE Affiliation Bye-Laws Appendix IX & K-12 Statutory Disclosure Canon
+id: pramaan-cbse-k12-disclosure
+version: "2026.11"
+require_image_alt: true
+applies_to:
+  institution_type: K12
+  framework: CBSE Appendix IX & UDISE+
+
+terminology:
+  - id: term-unverified-minor-share
+    pattern_text: public release of student mobile or aadhaar without parental consent
+    preferred: DPDP Rules 2025 Rule 10 verifiable guardian consent before any minor data sharing
+    severity: 95
+    note: "DPDP Act & Rules 2025 Rule 10 prohibit processing/sharing minor (<18) personal records without verifiable guardian consent."
+
+  - id: term-expired-fire-noc
+    pattern_text: fire noc pending renewal since
+    preferred: active Fire & Building Safety NOC verified with issuing municipal authority
+    severity: 85
+    note: "CBSE SARAS / Appendix IX Section B mandates active Fire Safety and Building Safety certificates."
+
+  - id: term-guaranteed-board-distinction
+    pattern_text: guaranteed 100% board distinction
+    preferred: historical 3-year Class X and Class XII board pass percentages per CBSE Appendix IX Section E
+    severity: 90
+    note: "CBSE Affiliation Bye-Laws prohibit unsubstantiated 100% distinction guarantees; schools must disclose audited 3-year board results."
+
+  - id: term-without-guardian-consent
+    pattern_text: without verifiable guardian consent
+    preferred: with verified DPDP Rule 10 guardian consent via Family Hub / DigiLocker VPC
+    severity: 95
+    note: "DPDP Act 2023 Section 9 & Rule 10 prohibit sharing minor learner data without verifiable parental consent."
+
+facts:
+  - id: fact-cbse-section-cap
+    text: "CBSE Affiliation Bye-Laws Clause 4.1 limits class enrollment to at most 40 students per section with minimum 500 sq ft classroom area."
+    conditions:
+      - "maximum 40 students per section"
+      - "minimum 500 sq ft (1 sq m per student)"
+    valid_until: "2027-03-31"
+    subject_product: "CBSE Appendix IX Clause 4.1"
+    metric_value: "40"
+    comparison_operator: "<="
+    substantiation_level: "udise_plus_dcf"
+
+  - id: fact-cbse-ptr-ceiling
+    text: "CBSE Appendix IX maintains Pupil-Teacher Ratio within 30:1 across core teaching faculty."
+    conditions:
+      - "across core teaching faculty"
+    valid_until: "2027-03-31"
+    subject_product: "CBSE Appendix IX Faculty PTR"
+    metric_value: "30:1"
+    comparison_operator: "<="
+    substantiation_level: "udise_plus_staff_register"
+
+trigger_obligations:
+  - id: trig-cbse-safety-certs
+    trigger_pattern: "\\b(?:Appendix\\s+IX|CBSE\\s+Affiliated|SARAS)\\b"
+    required_disclaimer_id: disc-cbse-udise
+    required_disclaimer_text: "Mandatory Fire, Building, and Safe Drinking Water certificate validity dates disclosed per Appendix IX"
+    same_language: true
+    severity: 70
+
+voice_profile:
+  id: cbse-k12-clarity-voice
+  max_sentence_words: 32
+  min_sentence_words: 2
+  max_passive_voice_pct: 28.0
+  max_flesch_kincaid_grade: 14.0
+  severity: 35

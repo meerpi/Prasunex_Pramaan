@@ -1,0 +1,51 @@
+# Pramaan Faculty Academic Audit & NEP-2020 Research Verification Canon
+# Built-in national statutory rules only (institution-specific grants come from each tenant's ledger).
+
+id: pramaan-faculty-academic-audit
+version: "2026.11"
+require_image_alt: true
+
+terminology:
+  - id: term-predatory-journal
+    pattern_text: guaranteed ugc care indexed in 48 hours
+    preferred: peer-reviewed UGC-CARE / Scopus indexed publication verified by DOI
+    severity: 85
+    note: "Research Integrity: Predatory fast-track claims require verifiable DOI/ISSN indexing."
+
+  - id: term-uncondoned-absence
+    pattern_text: 100% regular physical attendance without condonation
+    preferred: verified attendance record within institutional medical condonation cap
+    severity: 70
+    note: "Academic Regulation: Attendance condonation cannot exceed 10% under medical rules."
+
+palette: []
+
+facts:
+  - id: fact-attendance-condonation-cap
+    text: "Minimum mandatory attendance is 75% overall and 65% pre-condonation with at most 10% medical condonation."
+    conditions:
+      - "maximum 10% medical condonation"
+      - "authenticated medical officer certificate"
+    valid_until: "2027-12-31"
+    subject_product: "Academic Regulation Ordinance"
+    metric_value: "75%"
+    comparison_operator: ">="
+    substantiation_level: "biometric_erp_register"
+
+trigger_obligations:
+  - id: trig-attendance-waiver
+    trigger_pattern: "\\b(?:condonation|medical\\s+relaxation|attendance\\s+waiver)\\b"
+    required_disclaimer_id: disc-medical-board
+    required_disclaimer_text: "Approved by Medical Board with signed biometric log reconciliation"
+    same_language: true
+    same_font_family: false
+    min_font_height_ratio: 0.45
+    severity: 75
+
+voice_profile:
+  id: faculty-senate-voice
+  max_sentence_words: 35
+  min_sentence_words: 2
+  max_passive_voice_pct: 30.0
+  max_flesch_kincaid_grade: 15.0
+  severity: 35

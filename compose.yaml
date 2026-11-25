@@ -1,0 +1,75 @@
+# Canonical Docker Compose Specification for Pramaan (VeriCampus)
+# Default profile runs air-gapped SQLite WAL; add `--profile postgres` to launch
+# multi-tenant PostgreSQL 16.6 with Row-Level Security (RLS) pre-initialized.
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pramaan-vericampus:0.1.0-round3
+    ports:
+      - "${PRAMAAN_PORT:-8000}:8000"
+    environment:
+      PRAMAAN_APP_NAME: "${PRAMAAN_APP_NAME:-Pramaan}"
+      # With `--profile postgres`, connect as the non-superuser RLS-enforced role:
+      # PRAMAAN_DATABASE_URL=postgresql+asyncpg://pramaan_app:pramaan_app_pw@db:5432/pramaan
+      PRAMAAN_DATABASE_URL: "${PRAMAAN_DATABASE_URL:-sqlite+aiosqlite:////var/lib/pramaan/pramaan.db}"
+      PRAMAAN_UPLOAD_DIR: "/var/lib/pramaan/uploads"
+      PRAMAAN_SECRET_KEY: "${PRAMAAN_SECRET_KEY:-}"
+      PRAMAAN_SIGNING_KEY_ID: "${PRAMAAN_SIGNING_KEY_ID:-}"
+      PRAMAAN_PREVIOUS_SECRET_KEYS: "${PRAMAAN_PREVIOUS_SECRET_KEYS:-}"
+      PRAMAAN_FORWARDED_ALLOW_IPS: "${PRAMAAN_FORWARDED_ALLOW_IPS:-127.0.0.1}"
+      PRAMAAN_OFFLINE_ONLY: "${PRAMAAN_OFFLINE_ONLY:-false}"
+      PRAMAAN_MAX_PDF_PAGES: "${PRAMAAN_MAX_PDF_PAGES:-100}"
+      HF_HOME: "/var/lib/pramaan/hf_cache"
+      PRAMAAN_DEFAULT_TENANT_ID: "${PRAMAAN_DEFAULT_TENANT_ID:-default}"
+      PRAMAAN_DIGILOCKER_CLIENT_ID: "${PRAMAAN_DIGILOCKER_CLIENT_ID:-}"
+      PRAMAAN_DIGILOCKER_CLIENT_SECRET: "${PRAMAAN_DIGILOCKER_CLIENT_SECRET:-}"
+      PRAMAAN_DIGILOCKER_REDIRECT_URI: "${PRAMAAN_DIGILOCKER_REDIRECT_URI:-http://localhost:8000/api/portals/consents/digilocker-callback}"
+      GEMINI_API_KEY: "${GEMINI_API_KEY:-}"
+      OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
+      OPENROUTER_API_KEY: "${OPENROUTER_API_KEY:-}"
+      PRAMAAN_LLM_MODEL: "${PRAMAAN_LLM_MODEL:-}"
+    volumes:
+      - pramaan_data:/var/lib/pramaan
+    networks:
+      - pramaan_net
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 25s
+    restart: unless-stopped
+
+  db:
+    image: postgres:16.6-alpine
+    profiles:
+      - postgres
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER:-pramaan}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-pramaan_dev_pw}"
+      POSTGRES_DB: "${POSTGRES_DB:-pramaan}"
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./pramaan/backend/sql/postgres_rls.sql:/docker-entrypoint-initdb.d/01_postgres_rls.sql:ro
+    networks:
+      - pramaan_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-pramaan} -d ${POSTGRES_DB:-pramaan}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  pramaan_data:
+  postgres_data:
+
+networks:
+  pramaan_net:
+    driver: bridge

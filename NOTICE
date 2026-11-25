@@ -1,0 +1,100 @@
+Pramaan (प्रमाण / VeriCampus) — Institutional Trust, Document Reconciliation & Selective-Disclosure Credential Platform
+Copyright 2026 Team Pramaan (PRASUNEX Innovathon 2026)
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+In accordance with the PRASUNEX Innovathon 2026 Open-Source Licensing Policy,
+all third-party libraries, pretrained machine-learning models, fonts, and
+statutory/cryptographic specifications used by Pramaan are attributed below.
+Every runtime dependency carries a permissive open-source license (MIT, BSD,
+Apache-2.0, SIL OFL 1.1, or MPL-2.0); no GPL/AGPL copyleft dependencies are
+linked into the runtime.
+
+================================================================================
+1. Pretrained Machine-Learning Models & Weights
+================================================================================
+- cross-encoder/nli-deberta-v3-base (Hugging Face / Microsoft DeBERTa-v3)
+  Authors: Pengcheng He, Jianfeng Gao, Weizhu Chen / Sentence-Transformers Team
+  License: Apache-2.0 / MIT
+  Usage: Tier 2 Natural Language Inference (NLI) entailment and contradiction
+  scoring for cross-document claim reconciliation and split conformal calibration.
+
+- sentence-transformers/all-MiniLM-L6-v2
+  Authors: Nils Reimers, Iryna Gurevych / Hugging Face Sentence-Transformers
+  License: Apache-2.0
+  Usage: Dense bi-encoder semantic retrieval in Adaptive Reciprocal Rank Fusion (RRF).
+
+- RapidOCR ONNX Runtime Models (PP-OCRv4 Detection & Recognition)
+  Authors: RapidAI / PaddleOCR Contributors
+  License: Apache-2.0
+  Usage: Local air-gapped OCR fallback on scanned PDF pages.
+
+================================================================================
+2. Backend Python Runtime Libraries
+================================================================================
+- FastAPI (https://fastapi.tiangolo.com/) — MIT License
+- Uvicorn & Starlette (https://www.uvicorn.org/) — BSD-3-Clause License
+- Pydantic & pydantic-settings (https://docs.pydantic.dev/) — MIT License
+- SQLAlchemy 2.0 (https://www.sqlalchemy.org/) — MIT License
+- aiosqlite (https://github.com/omnilib/aiosqlite) — MIT License
+- asyncpg (https://github.com/MagicStack/asyncpg) — Apache-2.0 License
+- Z3 Theorem Prover / z3-solver (https://github.com/Z3Prover/z3, Microsoft Research) — MIT License
+  Usage: Tier 1.5 SMT formal arithmetic proofs, coupled unsat-core extraction,
+  CGPA credit-weighting, medical attendance condonation, and table cross-footing.
+- PyTorch (https://pytorch.org/) — BSD-3-Clause License
+- Hugging Face Transformers (https://github.com/huggingface/transformers) — Apache-2.0 License
+- Sentence-Transformers (https://www.sbert.net/) — Apache-2.0 License
+- ONNX Runtime (https://onnxruntime.ai/, Microsoft) — MIT License
+- RapidFuzz (https://github.com/rapidfuzz/RapidFuzz) — MIT License
+- rank-bm25 (https://github.com/dorianbrown/rank_bm25) — Apache-2.0 License
+- pypdf (https://github.com/py-pdf/pypdf) — BSD-3-Clause License
+- pypdfium2 / PDFium (https://github.com/pypdfium2-team/pypdfium2) — Apache-2.0 / BSD-3-Clause License
+- pdfplumber (https://github.com/jsvine/pdfplumber) — MIT License
+  (Note: PyMuPDF / fitz is intentionally excluded due to AGPL-3.0 licensing.)
+- python-docx (https://github.com/python-openxml/python-docx) — MIT License
+- OpenCV Headless / opencv-python-headless (https://opencv.org/) — Apache-2.0 License
+- Pillow / PIL (https://python-pillow.org/) — MIT-CMU License
+- pyca/cryptography (https://cryptography.io/) — Apache-2.0 / BSD-3-Clause License
+- PyJWT (https://pyjwt.readthedocs.io/) — MIT License
+- cbor2 (https://github.com/agronholm/cbor2) — MIT License
+- python-qrcode (https://github.com/lincolnloop/python-qrcode) — BSD-3-Clause License
+- pytesseract (https://github.com/madmaze/pytesseract) — Apache-2.0 License
+- HTTPX (https://www.python-httpx.org/) — BSD-3-Clause License
+- sse-starlette (https://github.com/sysid/sse-starlette) — BSD-3-Clause License
+- PyYAML (https://pyyaml.org/) — MIT License
+- NumPy (https://numpy.org/) — BSD-3-Clause License
+
+================================================================================
+3. Frontend Web Application Libraries & Self-Hosted Variable Fonts
+================================================================================
+- React 19 & React DOM (https://react.dev/, Meta Platforms) — MIT License
+- Vite 6 (https://vite.dev/, Evan You & Vite Contributors) — MIT License
+- Tailwind CSS v4 (https://tailwindcss.com/, Tailwind Labs) — MIT License
+- TipTap & ProseMirror (@tiptap/react, @tiptap/starter-kit, @tiptap/pm) — MIT License
+- Lucide Icons (https://lucide.dev/, lucide-react) — ISC License
+- Self-Hosted Variable Fonts (bundled locally in pramaan/frontend/src/assets/fonts/):
+  - Anek Latin Variable — SIL Open Font License 1.1
+  - Anek Devanagari Variable — SIL Open Font License 1.1
+  - JetBrains Mono Variable — SIL Open Font License 1.1
+
+================================================================================
+4. Cryptographic, Identity & Regulatory Standards Implemented
+================================================================================
+- IETF RFC 9162 — Certificate Transparency Version 2.0 (Salted Merkle Tree
+  domain separation: 0x00 leaf prefix, 0x01 interior node prefix, Signed Tree Heads).
+- IETF RFC 9285 — The Base45 Data Encoding (Alphanumeric QR mode payload encoding).
+- IETF RFC 8949 — Concise Binary Object Representation (CBOR).
+- IETF RFC 9901 — Selective Disclosure for JWTs (SD-JWT `vc+sd-jwt`, `_sd_alg: sha-256`).
+- IETF RFC 7636 — Proof Key for Code Exchange by OAuth Public Clients (PKCE S256).
+- W3C Verifiable Credentials Data Model v2.0 & Data Integrity EdDSA Cryptosuites
+  (`eddsa-rdfc-2022`).
+- C2PA 2.1 — Coalition for Content Provenance and Authenticity (ECDSA P-256
+  signed governance manifests).
+- Split Conformal Risk Control — Angelopoulos, Bates, Fisch, Lei, Schuster (2022/2024),
+  "Conformal Risk Control", ICLR.
+- Indian Regulatory & Statutory Frameworks modeled in Declarative YAML Canons:
+  - Digital Personal Data Protection (DPDP) Act 2023 (Sections 6, 8, 9) &
+    Draft DPDP Rules 2025 (Rule 10 Verifiable Parental Consent).
+  - National Assessment and Accreditation Council (NAAC) SSR & DVV Manual.
+  - Central Board of Secondary Education (CBSE) Affiliation Bye-Laws 2018
+    (Chapter 4 Clauses 4.1–4.8 & Mandatory Public Disclosure Appendix IX).
+  - UDISE+ 2024-25 Ministry of Education School Infrastructure Macro Priors.

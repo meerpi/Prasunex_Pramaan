@@ -1,0 +1,34 @@
+# Pramaan Institutional Regulatory Compliance Canon (NAAC SSR / AISHE / AICTE)
+# Built-in national statutory rules only (institution-specific finances come from each tenant's audited ledger).
+
+id: pramaan-naac-aishe-ssr
+version: "2026.11"
+require_image_alt: true
+
+terminology:
+  - id: term-fake-accreditation
+    pattern_text: permanent naac a++ accredited
+    preferred: NAAC accredited for the active cycle validity window
+    severity: 95
+    note: "NAAC Cycle accreditation expires after 5 years; cycle dates must be explicit."
+
+palette: []
+
+facts:
+  - id: fact-sfr-ceiling
+    text: "Institutional Student-Faculty Ratio must not exceed the 15:1 regulatory ceiling for technical degree programmes."
+    conditions:
+      - "regular full-time faculty denominator"
+    valid_until: "2027-09-30"
+    subject_product: "AISHE HR Roster"
+    metric_value: "15:1"
+    comparison_operator: "<="
+    substantiation_level: "hr_biometric_roster"
+
+trigger_obligations:
+  - id: trig-naac-cycle-dates
+    trigger_pattern: "\\bNAAC\\s+(?:Grade\\s+)?A(?:\\+\\+|\\+)?(?!\\w)"
+    required_disclaimer_id: disc-naac-cycle
+    required_disclaimer_text: "Cycle validity window stated per official NAAC assessment certificate"
+    same_language: true
+    severity: 70

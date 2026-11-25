@@ -1,0 +1,40 @@
+# Python & virtual environments
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.import_linter_cache/
+
+# Node / frontend
+node_modules/
+pramaan/frontend/node_modules/
+pramaan/frontend/dist/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Runtime state, databases & local secrets
+*.db
+*.db-shm
+*.db-wal
+pramaan/backend/uploads/
+.pramaan_secret_key
+.env
+.env.local
+.env.*.local
+
+# OS & editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
